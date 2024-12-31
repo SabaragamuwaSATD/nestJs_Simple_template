@@ -1,10 +1,11 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ProductsService } from './products.service';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  //add products.............................................................
   @Post('/add')
   addProduct(
     @Body('title') prodTitle: string,
@@ -21,5 +22,17 @@ export class ProductsController {
       prodVendor,
     );
     return { id: generatedId };
+  }
+
+  //get all the products....................................................
+  @Get('/all')
+  getAllProducts() {
+    return this.productsService.getProducts();
+  }
+
+  //get single product.......................................................
+  @Get('/:id')
+  getProduct(@Param('id') prodId: string) {
+    return this.productsService.getSingleProduct(prodId);
   }
 }
